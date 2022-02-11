@@ -125,21 +125,41 @@ switch($control[0]) {
       require_once("controllers/anuncios.controller.php");
       $anuncio = new AnunciosController($conexion);
       switch(METODO){
-	case "GET":
-        switch($control[1]) {
-          case "list":
-            $anuncio->listarAnuncio();
+        case "GET":
+            switch($control[1]) {
+              case "list":
+                $anuncio->listarAnuncio();
+                break;
+              case "listAlim":
+                $anuncio->listarAnuncioAlim();
+                break;
+              case "listElec":
+                $anuncio->listarAnuncioElec();
+                break;
+              case "listDeco":
+                $anuncio->listarAnuncioDeco();
+                break;
+              case "listVehi":
+                $anuncio->listarAnuncioVehi();
+                break;
+              case "listTusA":
+                $anuncio->listarTusAnuncio();
+                break;
+            }
             break;
-        }
-        break;
         case "POST":
-	       case "":
-          $anuncio->enviarAnuncio();
-          break;
+            $anuncio->enviarAnuncio();
+            break;
+        case "PUT":
+            $anuncio->editarAnuncio();
+            break;
+        case "DELETE":
+            $anuncio->eliminarAnuncio($control[1]);
+            break;
         default: exit(json_encode(["Bienvenido al Backend con routes"]));
       }
       break;
-
+      
 
     default:
     exit(json_encode(["Bienvenido al Backend con routes"]));

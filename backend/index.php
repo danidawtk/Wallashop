@@ -148,7 +148,13 @@ switch($control[0]) {
             }
             break;
         case "POST":
-            $anuncio->enviarAnuncio();
+            switch($control[1]) {
+              case "imageanu":
+                $anuncio->subirAvatarAnu();
+                break;
+              case "":
+                $anuncio->enviarAnuncio();
+            }
             break;
         case "PUT":
             $anuncio->editarAnuncio();

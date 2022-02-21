@@ -202,7 +202,7 @@ class UserController {
       }
 
       //Obtenemos los datos guardados en el servidor relacionados con el usuario
-      $peticion = $this->db->prepare("SELECT nombre,apellidos,email,telefono FROM usuarios WHERE id=?");
+      $peticion = $this->db->prepare("SELECT nombre,apellidos,poblacion,provincia,email,telefono FROM usuarios WHERE id=?");
       $peticion->execute([IDUSER]);
       $resultado = $peticion->fetchObject();
 
@@ -211,6 +211,8 @@ class UserController {
       $nApellidos = isset($user->apellidos) ? $user->apellidos : $resultado->apellidos;
       $nTelefono = isset($user->telefono) ? $user->telefono : $resultado->telefono;
       $nEmail = isset($user->email) ? $user->email : $resultado->email;
+      $nPoblacion = isset($user->poblacion) ? $user->poblacion : $resultado->poblacion;
+      $nProvincia = isset($user->provincia) ? $user->provincia : $resultado->provincia;
 
       //Si hemos recibido el dato de modificar la password.
       if(isset($user->password) && (strlen($user->password))){
@@ -218,13 +220,13 @@ class UserController {
         //Encriptamos la contraseña.
         $nPassword = password_hash($user->password, PASSWORD_BCRYPT);
         //Preparamos la petición.
-        $eval = "UPDATE usuarios SET nombre=?,apellidos=?,password=?,email=?,telefono=? WHERE id=?";
+        $eval = "UPDATE usuarios SET nombre=?,apellidos=?,password=?,poblacion=?,provincia=?,email=?,telefono=? WHERE id=?";
         $peticion = $this->db->prepare($eval);
-        $peticion->execute([$nNombre,$nApellidos,$nPassword,$nEmail,$nTelefono,IDUSER]);
+        $peticion->execute([$nNombre,$nApellidos,$nPassword,$nPoblacion,$nProvincia,$nEmail,$nTelefono,IDUSER]);
       } else {
-        $eval = "UPDATE usuarios SET nombre=?,apellidos=?,email=?,telefono=? WHERE id=?";
+        $eval = "UPDATE usuarios SET nombre=?,apellidos=?,poblacion=?,provincia=?,email=?,telefono=? WHERE id=?";
         $peticion = $this->db->prepare($eval);
-        $peticion->execute([$nNombre,$nApellidos,$nEmail,$nTelefono,IDUSER]);        
+        $peticion->execute([$nNombre,$nApellidos,$nPoblacion,$nProvincia,$nEmail,$nTelefono,IDUSER]);        
       }
       http_response_code(201);
       exit(json_encode("Usuario actualizado correctamente"));
